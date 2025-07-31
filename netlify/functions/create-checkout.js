@@ -28,21 +28,26 @@ exports.handler = async (event, context) => {
 
   try {
     // Parse the request body
-    const { firstName, lastName, email, priceId, successUrl, cancelUrl } = JSON.parse(event.body);
+    const { firstName, lastName, email, productType, quantity, successUrl, cancelUrl } = JSON.parse(event.body);
 
     // Validate required fields
-    if (!firstName || !lastName || !email) {
+    if (!firstName || !lastName || !email || !productType) {
       return {
         statusCode: 400,
         headers,
         body: JSON.stringify({ 
-          error: 'Missing required fields: firstName, lastName, and email are required' 
+          error: 'Missing required fields: firstName, lastName, email, and productType are required' 
         }),
       };
     }
 
-    // Use provided priceId or fallback to environment variable
-    const stripePriceId = priceId || process.env.STRIPE_PRICE_ID;
+    // Get price ID based on product type
+    const priceIDs = {
+      pdf: process.env.STRIPE_PRICE_ID_PDF,
+      paperback: process.env.STRIPE_PRICE_ID_PAPERBACK
+    };
+    
+    const stripePriceId = priceIDs[productType];
     
     if (!stripePriceId) {
       return {
@@ -54,13 +59,13 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Create Stripe checkout session
-    const session = await stripe.checkout.sessions.create({
+    // Create checkout session options
+    const sessionOptions = {
       payment_method_types: ['card'],
       line_items: [
         {
           price: stripePriceId,
-          quantity: 1,
+          quantity: quantity || 1,
         },
       ],
       mode: 'payment',
@@ -71,12 +76,22 @@ exports.handler = async (event, context) => {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        // Add any additional custom fields here
+        productType: productType,
+        quantity: quantity || 1,
       },
-      // Optional: Collect additional customer information
       customer_creation: 'always',
       billing_address_collection: 'auto',
-    });
+    };
+
+    // Add shipping for paperback orders
+    if (productType === 'paperback') {
+      sessionOptions.shipping_address_collection = {
+        allowed_countries: ['US', 'CA', 'GB'],
+      };
+    }
+
+    // Create Stripe checkout session
+    const session = await stripe.checkout.sessions.create(sessionOptions);
 
     return {
       statusCode: 200,
