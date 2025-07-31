@@ -21,14 +21,21 @@
     .checkout-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
     .error-message { color: #d63031; margin-top: 1rem; padding: 10px; background: #ffeaa7; border-radius: 8px; display: none; }
     .loading-message { color: #666; margin-top: 1rem; display: none; }
+    .shipping-notice { background: #e3f2fd; color: #1565c0; padding: 12px; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #2196f3; display: none; }
+    .shipping-notice .icon { font-size: 1.2em; margin-right: 8px; }
   </style>
 
   <div class="stripe-container">
     <div class="form-step">
       <h3>1. Choose Your Format</h3>
       <div class="format-buttons">
-        <a class="format-btn" id="pdf-btn">📱 Interactive PDF</a>
-        <a class="format-btn" id="paperback-btn">📚 Paperback Book</a>
+        <a class="format-btn" id="pdf-btn">📱 Interactive PDF - Digital Download</a>
+        <a class="format-btn" id="paperback-btn">📚 Paperback Book - Shipping Required</a>
+      </div>
+      
+      <div id="shipping-notice" class="shipping-notice">
+        <span class="icon">🚚</span>
+        <strong>Shipping Information:</strong> You'll be able to choose from USPS Ground Advantage, Priority Mail, or Priority Mail Express at checkout.
       </div>
     </div>
     
@@ -78,6 +85,7 @@
       const emailInput = document.getElementById('email');
       const errorDiv = document.getElementById('error-message');
       const loadingDiv = document.getElementById('loading-message');
+      const shippingNotice = document.getElementById('shipping-notice');
 
       let currentSelection = 'pdf';
 
@@ -86,9 +94,11 @@
         if (format === 'pdf') {
           pdfBtn.classList.add('active');
           paperbackBtn.classList.remove('active');
+          shippingNotice.style.display = 'none';
         } else {
           paperbackBtn.classList.add('active');
           pdfBtn.classList.remove('active');
+          shippingNotice.style.display = 'block';
         }
       }
 
