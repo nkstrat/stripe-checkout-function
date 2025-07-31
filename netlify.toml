@@ -1,11 +1,7 @@
 [build]
-  # No build command needed for functions-only project
   command = ""
-  # No publish directory needed
   publish = "."
-  # Functions directory
   functions = "netlify/functions"
 
-[functions]
-  # Use default Node.js bundler to avoid conflicts
-  node_bundler = "zisi"
+[build.environment]
+  NODE_VERSION = "18"

@@ -2,25 +2,14 @@
   "name": "stripe-checkout-function",
   "version": "1.0.0",
   "description": "Netlify serverless function for Stripe checkout with custom fields",
-  "main": "index.js",
+  "main": "netlify/functions/create-checkout.js",
   "scripts": {
-    "dev": "netlify dev",
-    "build": "echo 'No build step required'",
-    "deploy": "netlify deploy --prod"
+    "build": "echo 'No build step required'"
   },
   "keywords": ["netlify", "stripe", "serverless", "checkout"],
   "author": "Nathan King",
   "license": "ISC",
   "dependencies": {
     "stripe": "^14.12.0"
-  },
-  "devDependencies": {
-    "netlify-cli": "^17.13.2"
-  },
-  "resolutions": {
-    "@sqs/config-context": "^1.0.0"
-  },
-  "overrides": {
-    "@sqs/config-context": "^1.0.0"
   }
 }
