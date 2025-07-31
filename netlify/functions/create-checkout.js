@@ -88,13 +88,16 @@ exports.handler = async (event, context) => {
       sessionOptions.shipping_address_collection = {
         allowed_countries: ['US', 'CA', 'GB'],
       };
-      // Include specific shipping rates (replace with your actual shipping rate IDs)
+      // Include USPS shipping rates
       sessionOptions.shipping_options = [
         {
-          shipping_rate: process.env.STRIPE_SHIPPING_RATE_STANDARD || 'shr_your_standard_rate_id',
+          shipping_rate: process.env.STRIPE_SHIPPING_RATE_GROUND_ADVANTAGE || 'shr_your_ground_advantage_id',
         },
         {
-          shipping_rate: process.env.STRIPE_SHIPPING_RATE_EXPRESS || 'shr_your_express_rate_id',
+          shipping_rate: process.env.STRIPE_SHIPPING_RATE_PRIORITY || 'shr_your_priority_mail_id',
+        },
+        {
+          shipping_rate: process.env.STRIPE_SHIPPING_RATE_PRIORITY_EXPRESS || 'shr_your_priority_express_id',
         },
       ];
     }
