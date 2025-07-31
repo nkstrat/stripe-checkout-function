@@ -1,0 +1,145 @@
+<!-- 
+  Squarespace Custom Code Block Implementation
+  Add this to a Code Block in your Squarespace page
+-->
+
+<div id="custom-checkout-form">
+  <form id="stripeCheckoutForm" style="max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+    <h3 style="text-align: center; margin-bottom: 20px;">Complete Your Purchase</h3>
+    
+    <div style="margin-bottom: 15px;">
+      <label for="firstName" style="display: block; margin-bottom: 5px; font-weight: bold;">First Name *</label>
+      <input 
+        type="text" 
+        id="firstName" 
+        name="firstName" 
+        required 
+        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+      >
+    </div>
+    
+    <div style="margin-bottom: 15px;">
+      <label for="lastName" style="display: block; margin-bottom: 5px; font-weight: bold;">Last Name *</label>
+      <input 
+        type="text" 
+        id="lastName" 
+        name="lastName" 
+        required 
+        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+      >
+    </div>
+    
+    <div style="margin-bottom: 15px;">
+      <label for="email" style="display: block; margin-bottom: 5px; font-weight: bold;">Email Address *</label>
+      <input 
+        type="email" 
+        id="email" 
+        name="email" 
+        required 
+        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+      >
+    </div>
+    
+    <button 
+      type="submit" 
+      id="checkoutButton"
+      style="width: 100%; padding: 12px; background-color: #007cba; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; margin-top: 10px;"
+    >
+      Proceed to Checkout
+    </button>
+    
+    <div id="error-message" style="color: red; margin-top: 10px; display: none;"></div>
+    <div id="loading-message" style="color: #666; margin-top: 10px; display: none;">Processing...</div>
+  </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('stripeCheckoutForm');
+  const errorDiv = document.getElementById('error-message');
+  const loadingDiv = document.getElementById('loading-message');
+  const submitButton = document.getElementById('checkoutButton');
+  
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Clear previous errors
+    errorDiv.style.display = 'none';
+    errorDiv.textContent = '';
+    
+    // Show loading state
+    loadingDiv.style.display = 'block';
+    submitButton.disabled = true;
+    submitButton.textContent = 'Processing...';
+    
+    // Get form data
+    const formData = new FormData(form);
+    const firstName = formData.get('firstName').trim();
+    const lastName = formData.get('lastName').trim();
+    const email = formData.get('email').trim();
+    
+    // Validate required fields
+    if (!firstName || !lastName || !email) {
+      showError('All fields are required.');
+      resetButton();
+      return;
+    }
+    
+    try {
+      // Replace with your actual Netlify function URL
+      const response = await fetch('https://YOUR-NETLIFY-SITE.netlify.app/.netlify/functions/create-checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          // Optional: specify different price ID per product
+          // priceId: 'price_YOUR_STRIPE_PRICE_ID',
+          successUrl: window.location.origin + '/success', // Adjust as needed
+          cancelUrl: window.location.origin + '/cancel'   // Adjust as needed
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok && data.checkout_url) {
+        // Redirect to Stripe Checkout
+        window.location.href = data.checkout_url;
+      } else {
+        showError(data.error || 'Something went wrong. Please try again.');
+        resetButton();
+      }
+      
+    } catch (error) {
+      console.error('Error:', error);
+      showError('Network error. Please check your connection and try again.');
+      resetButton();
+    }
+  });
+  
+  function showError(message) {
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+    loadingDiv.style.display = 'none';
+  }
+  
+  function resetButton() {
+    submitButton.disabled = false;
+    submitButton.textContent = 'Proceed to Checkout';
+    loadingDiv.style.display = 'none';
+  }
+});
+</script>
+
+<!-- 
+  CONFIGURATION NOTES:
+  
+  1. Replace "YOUR-NETLIFY-SITE" with your actual Netlify site URL
+  2. Update successUrl and cancelUrl to match your Squarespace pages
+  3. Optionally add priceId if you have multiple products
+  4. Customize styling to match your site's design
+  5. Add additional form fields as needed (they'll be stored in Stripe metadata)
+-->
