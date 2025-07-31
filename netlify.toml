@@ -1,17 +1,11 @@
 [build]
   # No build command needed for functions-only project
-  command = "echo 'Functions-only project, no build required'"
+  command = ""
   # No publish directory needed
   publish = "."
-  # Functions directory (auto-detected but being explicit)
+  # Functions directory
   functions = "netlify/functions"
 
 [functions]
-  # Set Node.js version
-  node_bundler = "esbuild"
-
-# Optional: Set up redirects if you want to test the form locally
-[[redirects]]
-  from = "/test"
-  to = "/public/squarespace-form.html"
-  status = 200
+  # Use default Node.js bundler to avoid conflicts
+  node_bundler = "zisi"
