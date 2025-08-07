@@ -1,197 +1,372 @@
 <div id="wholehearted-stripe-embed">
-  <style>
-    #wholehearted-stripe-embed { max-width: 600px; margin: 2rem auto; padding: 0 1rem; }
-    .stripe-header { text-align: center; margin-bottom: 2rem; padding: 2rem; background: #FFFFFF; color: black; border-radius: 12px; }
-    .stripe-header h2 { font-size: 2rem; margin-bottom: 0.5rem; font-weight: 700; }
-    .stripe-header p { font-size: 1.2rem; margin: 0; opacity: 0.9; }
-    .stripe-container { background: white; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); overflow: hidden; border: 1px solid #e0e0e0; padding: 2rem; text-align: center; }
-    .form-step { margin-bottom: 1.5rem; }
-    .form-step h3 { color: #194F90; margin-bottom: 1rem; font-size: 1.3rem; }
-    .format-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-    .format-btn { background: white; border: 2px solid #194F90; color: #194F90; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; display: inline-block; cursor: pointer; }
-    .format-btn:hover, .format-btn.active { background: #194F90; color: white; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(25, 79, 144, 0.3); }
-    .quantity-selector input { width: 80px; padding: 10px; text-align: center; border: 2px solid #ccc; border-radius: 8px; font-size: 1rem; }
-    .customer-info { text-align: left; max-width: 400px; margin: 0 auto; }
-    .form-group { margin-bottom: 1rem; }
-    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #194F90; }
-    .form-group input { width: 100%; padding: 12px; border: 2px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box; }
-    .form-group input:focus { border-color: #194F90; outline: none; }
-    .checkout-btn { background: #FF8672; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1.2rem; transition: all 0.3s ease; display: inline-block; border: none; cursor: pointer; margin-top: 1.5rem; width: 100%; max-width: 300px; }
-    .checkout-btn:hover { background: #FFC4BD; transform: translateY(-2px); box-shadow: 0 4px 20px rgba(255, 134, 114, 0.4); }
-    .checkout-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
-    .error-message { color: #d63031; margin-top: 1rem; padding: 10px; background: #ffeaa7; border-radius: 8px; display: none; }
-    .loading-message { color: #666; margin-top: 1rem; display: none; }
-    .shipping-notice { background: #e3f2fd; color: #1565c0; padding: 12px; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #2196f3; display: none; }
-    .shipping-notice .icon { font-size: 1.2em; margin-right: 8px; }
-  </style>
+    <style>
+        #wholehearted-stripe-embed {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .stripe-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: #ffffff;
+            color: black;
+            border-radius: 12px;
+        }
+        .stripe-header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        .stripe-header p {
+            font-size: 1.2rem;
+            margin: 0;
+            opacity: 0.9;
+        }
 
-  <div class="stripe-container">
-    <div class="form-step">
-      <h3>1. Choose Your Format</h3>
-      <div class="format-buttons">
-        <a class="format-btn" id="pdf-btn">📱 Interactive PDF - Digital Download</a>
-        <a class="format-btn" id="paperback-btn">📚 Paperback Book - Shipping Required</a>
-      </div>
-      
-      <div id="shipping-notice" class="shipping-notice">
-        <span class="icon">🚚</span>
-        <strong>Shipping Information:</strong> You'll be able to choose from USPS Ground Advantage, Priority Mail, or Priority Mail Express at checkout.
-      </div>
+        /* --- MODIFICATION: Set base alignment to left for the whole form --- */
+        .stripe-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+            padding: 2rem;
+            text-align: left; /* Changed from 'center' to 'left' */
+        }
+
+        .form-step {
+            margin-bottom: 0;
+        } /* Removed margin-bottom to rely on <hr> for spacing */
+        .form-step h3 {
+            color: #194f90;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        /* --- MODIFICATION: Align format buttons to the left --- */
+        .format-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-start; /* Changed from 'center' */
+            flex-wrap: wrap;
+        }
+
+        .format-btn {
+            background: white;
+            border: 2px solid #194f90;
+            color: #194f90;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .format-btn:hover,
+        .format-btn.active {
+            background: #194f90;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(25, 79, 144, 0.3);
+        }
+        .quantity-selector input {
+            width: 80px;
+            padding: 10px;
+            text-align: center;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        /* --- MODIFICATION: Removed rule that centered the info block --- */
+        .customer-info {
+            /* The text-align, max-width, and margin properties were removed to allow natural left alignment */
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #194f90;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .form-group input:focus {
+            border-color: #194f90;
+            outline: none;
+        }
+
+        /* --- MODIFICATION: Made checkout button full-width --- */
+        .checkout-btn {
+            background: #ff8672;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: block; /* Changed from 'inline-block' */
+            border: none;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            width: 100%; /* Changed from max-width: 300px */
+            box-sizing: border-box; /* Added for consistent sizing */
+        }
+
+        .checkout-btn:hover {
+            background: #ffc4bd;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(255, 134, 114, 0.4);
+        }
+        .checkout-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* --- NEW: Style for the separator line --- */
+        .stripe-container hr {
+            border: none;
+            border-top: 1px solid #e9ecef;
+            margin: 2.5rem 0;
+        }
+
+        .error-message {
+            color: #d63031;
+            margin-top: 1rem;
+            padding: 10px;
+            background: #ffeaa7;
+            border-radius: 8px;
+            display: none;
+        }
+        .loading-message {
+            color: #666;
+            margin-top: 1rem;
+            display: none;
+        }
+        .shipping-notice {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 4px solid #2196f3;
+            display: none;
+        }
+        .shipping-notice .icon {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+    </style>
+
+    <div class="stripe-container">
+        <div class="form-step">
+            <h3>1. Choose Your Format</h3>
+            <div class="format-buttons">
+                <button type="button" class="format-btn" id="pdf-btn">
+                    📱 Interactive PDF
+                </button>
+                <button type="button" class="format-btn" id="paperback-btn">
+                    📚 Paperback
+                </button>
+            </div>
+
+            <div id="shipping-notice" class="shipping-notice">
+                <span class="icon">🚚</span>
+                <strong>Shipping Information:</strong> You'll be able to choose
+                from USPS Ground Advantage, Priority Mail, or Priority Mail
+                Express at checkout.
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="form-step quantity-selector">
+            <h3>2. Select Quantity</h3>
+            <input type="number" id="quantity-input" value="1" min="1" />
+        </div>
+
+        <hr />
+
+        <div class="form-step customer-info">
+            <h3>3. Your Information</h3>
+            <div class="form-group">
+                <label for="first-name">First Name *</label>
+                <input type="text" id="first-name" required />
+            </div>
+            <div class="form-group">
+                <label for="last-name">Last Name *</label>
+                <input type="text" id="last-name" required />
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" required />
+            </div>
+        </div>
+
+        <div class="checkout-button-container">
+            <button id="checkout-btn" class="checkout-btn">
+                Proceed to Payment
+            </button>
+        </div>
+
+        <div id="error-message" class="error-message"></div>
+        <div id="loading-message" class="loading-message">
+            Processing your request...
+        </div>
     </div>
-    
-    <div class="form-step quantity-selector">
-      <h3>2. Select Quantity</h3>
-      <input type="number" id="quantity-input" value="1" min="1">
-    </div>
-    
-    <div class="form-step customer-info">
-      <h3>3. Your Information</h3>
-      <div class="form-group">
-        <label for="first-name">First Name *</label>
-        <input type="text" id="first-name" required>
-      </div>
-      <div class="form-group">
-        <label for="last-name">Last Name *</label>
-        <input type="text" id="last-name" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Email Address *</label>
-        <input type="email" id="email" required>
-      </div>
-    </div>
-    
-    <div class="checkout-button-container">
-      <button id="checkout-btn" class="checkout-btn">Proceed to Payment</button>
-    </div>
-    
-    <div id="error-message" class="error-message"></div>
-    <div id="loading-message" class="loading-message">Processing your request...</div>
-  </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // --- START: CONFIGURE YOUR DETAILS ---
-      const NETLIFY_FUNCTION_URL = 'https://ws-whole-stripe.netlify.app/.netlify/functions/create-checkout';
-      const successUrl = 'https://www.wellspringgroup.org/success';
-      const cancelUrl = 'https://www.wellspringgroup.org/cancel';
-      // --- END: CONFIGURE YOUR DETAILS ---
+    <script>
+        // --- SQUARESPACE COMPATIBILITY FIX ---
+        document.addEventListener("DOMContentLoaded", function () {
+            // --- START: CONFIGURE YOUR DETAILS ---
+            const NETLIFY_FUNCTION_URL =
+                "https://ws-whole-stripe.netlify.app/.netlify/functions/create-checkout";
+            const successUrl = "https://www.wellspringgroup.org/success";
+            const cancelUrl = "https://www.wellspringgroup.org/cancel";
+            // --- END: CONFIGURE YOUR DETAILS ---
 
-      const pdfBtn = document.getElementById('pdf-btn');
-      const paperbackBtn = document.getElementById('paperback-btn');
-      const checkoutBtn = document.getElementById('checkout-btn');
-      const quantityInput = document.getElementById('quantity-input');
-      const firstNameInput = document.getElementById('first-name');
-      const lastNameInput = document.getElementById('last-name');
-      const emailInput = document.getElementById('email');
-      const errorDiv = document.getElementById('error-message');
-      const loadingDiv = document.getElementById('loading-message');
-      const shippingNotice = document.getElementById('shipping-notice');
+            const pdfBtn = document.getElementById("pdf-btn");
+            const paperbackBtn = document.getElementById("paperback-btn");
+            const checkoutBtn = document.getElementById("checkout-btn");
+            const quantityInput = document.getElementById("quantity-input");
+            const firstNameInput = document.getElementById("first-name");
+            const lastNameInput = document.getElementById("last-name");
+            const emailInput = document.getElementById("email");
+            const errorDiv = document.getElementById("error-message");
+            const loadingDiv = document.getElementById("loading-message");
+            const shippingNotice = document.getElementById("shipping-notice");
 
-      let currentSelection = 'pdf';
+            let currentSelection = "pdf";
 
-      function updateSelection(format) {
-        currentSelection = format;
-        if (format === 'pdf') {
-          pdfBtn.classList.add('active');
-          paperbackBtn.classList.remove('active');
-          shippingNotice.style.display = 'none';
-        } else {
-          paperbackBtn.classList.add('active');
-          pdfBtn.classList.remove('active');
-          shippingNotice.style.display = 'block';
-        }
-      }
+            function updateSelection(format) {
+                currentSelection = format;
+                if (format === "pdf") {
+                    pdfBtn.classList.add("active");
+                    paperbackBtn.classList.remove("active");
+                    shippingNotice.style.display = "none";
+                } else {
+                    paperbackBtn.classList.add("active");
+                    pdfBtn.classList.remove("active");
+                    shippingNotice.style.display = "block";
+                }
+            }
 
-      function showError(message) {
-        errorDiv.textContent = message;
-        errorDiv.style.display = 'block';
-        loadingDiv.style.display = 'none';
-      }
+            function showError(message) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = "block";
+                loadingDiv.style.display = "none";
+            }
 
-      function hideError() {
-        errorDiv.style.display = 'none';
-      }
+            function hideError() {
+                errorDiv.style.display = "none";
+            }
 
-      function setLoading(loading) {
-        if (loading) {
-          loadingDiv.style.display = 'block';
-          checkoutBtn.disabled = true;
-          checkoutBtn.textContent = 'Processing...';
-        } else {
-          loadingDiv.style.display = 'none';
-          checkoutBtn.disabled = false;
-          checkoutBtn.textContent = 'Proceed to Payment';
-        }
-      }
+            function setLoading(loading) {
+                if (loading) {
+                    loadingDiv.style.display = "block";
+                    checkoutBtn.disabled = true;
+                    checkoutBtn.textContent = "Processing...";
+                } else {
+                    loadingDiv.style.display = "none";
+                    checkoutBtn.disabled = false;
+                    checkoutBtn.textContent = "Proceed to Payment";
+                }
+            }
 
-      function validateForm() {
-        const firstName = firstNameInput.value.trim();
-        const lastName = lastNameInput.value.trim();
-        const email = emailInput.value.trim();
-        
-        if (!firstName || !lastName || !email) {
-          showError('Please fill in all required fields.');
-          return false;
-        }
-        
-        // Basic email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-          showError('Please enter a valid email address.');
-          return false;
-        }
-        
-        return true;
-      }
+            function validateForm() {
+                const firstName = firstNameInput.value.trim();
+                const lastName = lastNameInput.value.trim();
+                const email = emailInput.value.trim();
 
-      pdfBtn.addEventListener('click', () => updateSelection('pdf'));
-      paperbackBtn.addEventListener('click', () => updateSelection('paperback'));
+                if (!firstName || !lastName || !email) {
+                    showError("Please fill in all required fields.");
+                    return false;
+                }
 
-      checkoutBtn.addEventListener('click', async function() {
-        hideError();
-        
-        if (!validateForm()) {
-          return;
-        }
-        
-        setLoading(true);
-        
-        try {
-          const response = await fetch(NETLIFY_FUNCTION_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              firstName: firstNameInput.value.trim(),
-              lastName: lastNameInput.value.trim(),
-              email: emailInput.value.trim(),
-              productType: currentSelection,
-              quantity: parseInt(quantityInput.value, 10),
-              successUrl: successUrl + '?session_id={CHECKOUT_SESSION_ID}',
-              cancelUrl: cancelUrl,
-            })
-          });
+                // Basic email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showError("Please enter a valid email address.");
+                    return false;
+                }
 
-          const data = await response.json();
+                return true;
+            }
 
-          if (response.ok && data.checkout_url) {
-            // Redirect to Stripe Checkout
-            window.location.href = data.checkout_url;
-          } else {
-            showError(data.error || 'Something went wrong. Please try again.');
-            setLoading(false);
-          }
+            pdfBtn.addEventListener("click", () => updateSelection("pdf"));
+            paperbackBtn.addEventListener("click", () =>
+                updateSelection("paperback"),
+            );
 
-        } catch (error) {
-          console.error('Error:', error);
-          showError('Network error. Please check your connection and try again.');
-          setLoading(false);
-        }
-      });
+            checkoutBtn.addEventListener("click", async (e) => {
+                e.preventDefault();
+                hideError();
 
-      // Initialize with PDF selected
-      updateSelection('pdf');
-    });
-  </script>
+                if (!validateForm()) {
+                    return;
+                }
+
+                setLoading(true);
+
+                try {
+                    const response = await fetch(NETLIFY_FUNCTION_URL, {
+                        method: "POST",
+                        mode: "cors",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            firstName: firstNameInput.value.trim(),
+                            lastName: lastNameInput.value.trim(),
+                            email: emailInput.value.trim(),
+                            productType: currentSelection,
+                            quantity: parseInt(quantityInput.value, 10),
+                            successUrl:
+                                successUrl +
+                                "?session_id={CHECKOUT_SESSION_ID}",
+                            cancelUrl: cancelUrl,
+                        }),
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok && data.checkout_url) {
+                        // Redirect to Stripe Checkout
+                        window.location.href = data.checkout_url;
+                    } else {
+                        showError(
+                            data.error ||
+                                "Something went wrong. Please try again.",
+                        );
+                        setLoading(false);
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    // More specific error handling for common issues
+                    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                        showError("Unable to connect to payment service. Please try refreshing the page.");
+                    } else {
+                        showError("Network error. Please check your connection and try again.");
+                    }
+                    setLoading(false);
+                }
+            });
+
+            // Initialize with PDF selected
+            updateSelection("pdf");
+        });
+    </script>
 </div>
