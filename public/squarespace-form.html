@@ -322,9 +322,14 @@
                 setLoading(true);
 
                 try {
+                    // Add timeout to prevent hanging
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+                    
                     const response = await fetch(NETLIFY_FUNCTION_URL, {
                         method: "POST",
                         mode: "cors",
+                        signal: controller.signal,
                         headers: {
                             "Content-Type": "application/json",
                         },
@@ -341,6 +346,7 @@
                         }),
                     });
 
+                    clearTimeout(timeoutId);
                     const data = await response.json();
 
                     if (response.ok && data.checkout_url) {
@@ -356,7 +362,9 @@
                 } catch (error) {
                     console.error("Error:", error);
                     // More specific error handling for common issues
-                    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    if (error.name === 'AbortError') {
+                        showError("Request timed out. The payment service is taking too long to respond. Please try again.");
+                    } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
                         showError("Unable to connect to payment service. Please try refreshing the page.");
                     } else {
                         showError("Network error. Please check your connection and try again.");

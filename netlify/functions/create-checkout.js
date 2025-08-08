@@ -1,6 +1,12 @@
 const https = require('https');
 const querystring = require('querystring');
 
+// Keep HTTPS agent alive for better performance
+const httpsAgent = new https.Agent({
+  keepAlive: true,
+  maxSockets: 50
+});
+
 exports.handler = async (event, context) => {
   // Set CORS headers
   const headers = {
@@ -102,6 +108,8 @@ exports.handler = async (event, context) => {
         port: 443,
         path: '/v1/checkout/sessions',
         method: 'POST',
+        agent: httpsAgent,
+        timeout: 25000, // 25 second timeout
         headers: {
           'Authorization': `Bearer ${process.env.STRIPE_SECRET_KEY}`,
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -124,6 +132,11 @@ exports.handler = async (event, context) => {
 
       req.on('error', (e) => {
         reject(e);
+      });
+
+      req.on('timeout', () => {
+        req.destroy();
+        reject(new Error('Request timeout'));
       });
 
       req.write(postData);

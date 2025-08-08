@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wholehearted Community - Transform Your Life</title>
+    <meta name="description" content="Join the Wholehearted Community and continue your journey of courage, compassion, and connection.">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #194f90 0%, #2c5aa0 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+            margin-bottom: 3rem;
+            border-radius: 12px;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Benefits Section */
+        .benefits {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 3rem;
+        }
+        
+        .benefits h2 {
+            color: #194f90;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .benefit-item {
+            text-align: center;
+            padding: 1.5rem;
+        }
+        
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .benefit-item h3 {
+            color: #194f90;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .benefit-item p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        /* Social Proof */
+        .testimonial {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            border-left: 4px solid #ff8672;
+            margin: 2rem 0;
+            font-style: italic;
+            text-align: center;
+        }
+        
+        .testimonial p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: #194f90;
+            font-style: normal;
+        }
+        
+        /* Purchase Form Container */
+        .purchase-section {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .purchase-section h2 {
+            color: #194f90;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .purchase-section .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+        
+        /* Import existing form styles */
+        #wholehearted-stripe-embed {
+            max-width: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .stripe-container {
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
+            overflow: visible;
+            border: none;
+            padding: 0;
+            text-align: left;
+        }
+        
+        .form-step {
+            margin-bottom: 2rem;
+        }
+        
+        .form-step h3 {
+            color: #194f90;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .format-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        
+        .format-btn {
+            background: white;
+            border: 2px solid #194f90;
+            color: #194f90;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .format-btn:hover,
+        .format-btn.active {
+            background: #194f90;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(25, 79, 144, 0.3);
+        }
+        
+        .quantity-selector input {
+            width: 80px;
+            padding: 10px;
+            text-align: center;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #194f90;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus {
+            border-color: #194f90;
+            outline: none;
+        }
+        
+        .checkout-btn {
+            background: #ff8672;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: block;
+            border: none;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .checkout-btn:hover {
+            background: #e65d47;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(255, 134, 114, 0.4);
+        }
+        
+        .checkout-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .stripe-container hr {
+            border: none;
+            border-top: 1px solid #e9ecef;
+            margin: 2.5rem 0;
+        }
+        
+        .error-message {
+            color: #d63031;
+            margin-top: 1rem;
+            padding: 10px;
+            background: #ffeaa7;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .loading-message {
+            color: #666;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .shipping-notice {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 4px solid #2196f3;
+            display: none;
+        }
+        
+        .shipping-notice .icon {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .format-buttons {
+                flex-direction: column;
+            }
+            
+            .format-btn {
+                text-align: center;
+            }
+        }
+        
+        /* Trust indicators */
+        .trust-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Continue Your Wholehearted Journey</h1>
+            <p>Join a community of courage, compassion, and connection. Transform your life with ongoing support and guidance.</p>
+        </section>
+        
+        <!-- Benefits Section -->
+        <section class="benefits">
+            <h2>What You'll Get</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <span class="benefit-icon">🎯</span>
+                    <h3>Ongoing Guidance</h3>
+                    <p>Continue building the skills and mindset for wholehearted living with structured support.</p>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">👥</span>
+                    <h3>Community Connection</h3>
+                    <p>Connect with like-minded individuals on the same journey of growth and vulnerability.</p>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">📚</span>
+                    <h3>Exclusive Resources</h3>
+                    <p>Access additional tools, exercises, and content to deepen your practice.</p>
+                </div>
+            </div>
+            
+            <div class="testimonial">
+                <p>"The community has been transformational. Having ongoing support makes all the difference in maintaining the practices I learned."</p>
+                <div class="testimonial-author">— Sarah M., Community Member</div>
+            </div>
+        </section>
+        
+        <!-- Purchase Section -->
+        <section class="purchase-section">
+            <h2>Get Started Today</h2>
+            <p class="subtitle">Choose your preferred format and join the community</p>
+            
+            <div class="trust-indicators">
+                <div class="trust-item">
+                    <span>🔒</span>
+                    Secure Checkout
+                </div>
+                <div class="trust-item">
+                    <span>📱</span>
+                    Instant Access
+                </div>
+                <div class="trust-item">
+                    <span>💯</span>
+                    30-Day Guarantee
+                </div>
+            </div>
+            
+            <!-- Embed existing form -->
+            <div id="wholehearted-stripe-embed">
+                <div class="stripe-container">
+                    <div class="form-step">
+                        <h3>1. Choose Your Format</h3>
+                        <div class="format-buttons">
+                            <button type="button" class="format-btn" id="pdf-btn">
+                                📱 Interactive PDF
+                            </button>
+                            <button type="button" class="format-btn" id="paperback-btn">
+                                📚 Paperback
+                            </button>
+                        </div>
+
+                        <div id="shipping-notice" class="shipping-notice">
+                            <span class="icon">🚚</span>
+                            <strong>Shipping Information:</strong> You'll be able to choose
+                            from USPS Ground Advantage, Priority Mail, or Priority Mail
+                            Express at checkout.
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="form-step quantity-selector">
+                        <h3>2. Select Quantity</h3>
+                        <input type="number" id="quantity-input" value="1" min="1" />
+                    </div>
+
+                    <hr />
+
+                    <div class="form-step customer-info">
+                        <h3>3. Your Information</h3>
+                        <div class="form-group">
+                            <label for="first-name">First Name *</label>
+                            <input type="text" id="first-name" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Last Name *</label>
+                            <input type="text" id="last-name" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" required />
+                        </div>
+                    </div>
+
+                    <div class="checkout-button-container">
+                        <button id="checkout-btn" class="checkout-btn">
+                            Proceed to Payment
+                        </button>
+                    </div>
+
+                    <div id="error-message" class="error-message"></div>
+                    <div id="loading-message" class="loading-message">
+                        Processing your request...
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Configure your details
+            const NETLIFY_FUNCTION_URL = "https://ws-whole-stripe.netlify.app/.netlify/functions/create-checkout";
+            const successUrl = "https://www.wellspringgroup.org/success";
+            const cancelUrl = "https://www.wellspringgroup.org/cancel";
+
+            const pdfBtn = document.getElementById("pdf-btn");
+            const paperbackBtn = document.getElementById("paperback-btn");
+            const checkoutBtn = document.getElementById("checkout-btn");
+            const quantityInput = document.getElementById("quantity-input");
+            const firstNameInput = document.getElementById("first-name");
+            const lastNameInput = document.getElementById("last-name");
+            const emailInput = document.getElementById("email");
+            const errorDiv = document.getElementById("error-message");
+            const loadingDiv = document.getElementById("loading-message");
+            const shippingNotice = document.getElementById("shipping-notice");
+
+            let currentSelection = "pdf";
+
+            function updateSelection(format) {
+                currentSelection = format;
+                if (format === "pdf") {
+                    pdfBtn.classList.add("active");
+                    paperbackBtn.classList.remove("active");
+                    shippingNotice.style.display = "none";
+                } else {
+                    paperbackBtn.classList.add("active");
+                    pdfBtn.classList.remove("active");
+                    shippingNotice.style.display = "block";
+                }
+            }
+
+            function showError(message) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = "block";
+                loadingDiv.style.display = "none";
+            }
+
+            function hideError() {
+                errorDiv.style.display = "none";
+            }
+
+            function setLoading(loading) {
+                if (loading) {
+                    loadingDiv.style.display = "block";
+                    checkoutBtn.disabled = true;
+                    checkoutBtn.textContent = "Processing...";
+                } else {
+                    loadingDiv.style.display = "none";
+                    checkoutBtn.disabled = false;
+                    checkoutBtn.textContent = "Proceed to Payment";
+                }
+            }
+
+            function validateForm() {
+                const firstName = firstNameInput.value.trim();
+                const lastName = lastNameInput.value.trim();
+                const email = emailInput.value.trim();
+
+                if (!firstName || !lastName || !email) {
+                    showError("Please fill in all required fields.");
+                    return false;
+                }
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showError("Please enter a valid email address.");
+                    return false;
+                }
+
+                return true;
+            }
+
+            pdfBtn.addEventListener("click", () => updateSelection("pdf"));
+            paperbackBtn.addEventListener("click", () => updateSelection("paperback"));
+
+            checkoutBtn.addEventListener("click", async (e) => {
+                e.preventDefault();
+                hideError();
+
+                if (!validateForm()) {
+                    return;
+                }
+
+                setLoading(true);
+
+                try {
+                    const response = await fetch(NETLIFY_FUNCTION_URL, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            firstName: firstNameInput.value.trim(),
+                            lastName: lastNameInput.value.trim(),
+                            email: emailInput.value.trim(),
+                            productType: currentSelection,
+                            quantity: parseInt(quantityInput.value, 10),
+                            successUrl: successUrl + "?session_id={CHECKOUT_SESSION_ID}",
+                            cancelUrl: cancelUrl,
+                        }),
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok && data.checkout_url) {
+                        window.location.href = data.checkout_url;
+                    } else {
+                        showError(data.error || "Something went wrong. Please try again.");
+                        setLoading(false);
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    showError("Network error. Please check your connection and try again.");
+                    setLoading(false);
+                }
+            });
+
+            // Initialize with PDF selected
+            updateSelection("pdf");
+        });
+    </script>
+</body>
+</html>
